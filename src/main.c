@@ -1,24 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Vsavilov <Vsavilov@student.42Madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/08 11:41:58 by Vsavilov          #+#    #+#             */
-/*   Updated: 2022/01/09 12:14:01 by Vsavilov         ###   ########.fr       */
+/*   Created: 2022/01/17 15:13:51 by Vsavilov          #+#    #+#             */
+/*   Updated: 2022/01/17 17:21:13 by Vsavilov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include <pipex.h>
 
-# include <stdio.h>
-# include <unistd.h>
-# include <libft.h>
-# include <errno.h>
-# include <stdlib.h>
-# include <pipex/structs.h>
-# include <pipex/functions.h>
+//Check path
+//verify perm (access)
+//Strjoin path + command (parse)
 
-#endif
+void	leaks(void)
+{
+	system("leaks Pipex");
+}
+
+int	main(int argc, char **argv)
+{
+	t_pex	pex;
+
+	if (argc < 2)
+		return (no_args());
+	//leaks();
+	parse(&pex, argv);
+	search_command(&pex);
+	return (0);
+}

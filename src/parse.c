@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Vsavilov <Vsavilov@student.42Madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/08 11:41:58 by Vsavilov          #+#    #+#             */
-/*   Updated: 2022/01/09 12:14:01 by Vsavilov         ###   ########.fr       */
+/*   Created: 2022/01/08 11:17:29 by Vsavilov          #+#    #+#             */
+/*   Updated: 2022/01/17 17:26:57 by Vsavilov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include <pipex.h>
 
-# include <stdio.h>
-# include <unistd.h>
-# include <libft.h>
-# include <errno.h>
-# include <stdlib.h>
-# include <pipex/structs.h>
-# include <pipex/functions.h>
+void	parse(t_pex *pex, char **arg)
+{
+	init_pex(pex, arg);
+	env_compare(pex);
+	arg_struct(pex, arg);
+}
 
-#endif
+void	arg_struct(t_pex *pex, char **arg)
+{
+	int i;
+
+	i = 0;
+	while (arg[++i])
+		pex->arg[i - 1] = ft_strdup(ft_strjoin("/", arg[i]));
+}

@@ -6,7 +6,7 @@
 #    By: Vsavilov <Vsavilov@student.42Madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/22 13:34:33 by Vsavilov          #+#    #+#              #
-#    Updated: 2022/01/05 16:17:06 by Vsavilov         ###   ########.fr        #
+#    Updated: 2022/01/17 17:20:02 by Vsavilov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 ###   Program/s name/s   ###
 ############################
 
-NAME = fdf
+NAME = Pipex
 
 LIBFT_NAME = libft.a
 
@@ -48,7 +48,12 @@ LIBFT_PATH = libft
 ###   Source items   ###
 ########################
 
-SRCS_NAME = main.c
+SRCS_NAME = main.c \
+	    parse.c \
+	    utils.c \
+	    error_msg.c \
+	    env_compare.c \
+	    init_structs.c
 
 #####################
 ###   Make rule   ###
@@ -70,7 +75,7 @@ OBJS = $(addprefix $(OBJ_PATH)/, $(OBJS_NAME))
 ###   Create libs   ###
 #######################
 
-LIBFT =	$(LIB_PATH)/$(LIBFT_PATH)
+LIBFT =	$(LIBFT_PATH)
 
 #################################
 ###   Rules can be executed   ###
