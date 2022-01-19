@@ -20,13 +20,18 @@ void    env_compare(t_pex *pex)
 
 void	search_command(t_pex *pex)
 {
-	int i;
+	int	i;
+	int	j;
 
-	i = 1;
-	while (pex->path[1])
+	i = -1;
+	while (pex->arg[++i])
 	{
-		if (!access(ft_strjoin(pex->path[i], pex->arg[i]), X_OK))
-			printf(":D");
+		j = -1;
+		while (pex->path[++j])
+			if (!access(ft_strjoin(pex->path[j], pex->arg[i]), X_OK))
+			{
+				printf("command valid");
+			}
 	}
-			exit(fnf());
+	//command not found
 }

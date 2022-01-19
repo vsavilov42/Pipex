@@ -6,7 +6,7 @@
 #    By: Vsavilov <Vsavilov@student.42Madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/22 13:34:33 by Vsavilov          #+#    #+#              #
-#    Updated: 2022/01/17 17:20:02 by Vsavilov         ###   ########.fr        #
+#    Updated: 2022/01/19 12:14:37 by Vsavilov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,6 +53,7 @@ SRCS_NAME = main.c \
 	    utils.c \
 	    error_msg.c \
 	    env_compare.c \
+	    child_process.c \
 	    init_structs.c
 
 #####################
