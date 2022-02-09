@@ -1,13 +1,7 @@
 #include <pipex.h>
 
-int	count_words(char **str)
+int	errormsg(char *str)
 {
-	int	words;
-
-	words = 0;
-	if (!str)
-		return (0);
-	while (str[words])
-		words++;
-	return (words);
+	write(1, str, ft_strlen(str));
+	return (1);
 }

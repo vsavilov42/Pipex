@@ -6,7 +6,7 @@
 /*   By: Vsavilov <Vsavilov@student.42Madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 10:53:34 by Vsavilov          #+#    #+#             */
-/*   Updated: 2022/01/19 13:46:33 by Vsavilov         ###   ########.fr       */
+/*   Updated: 2022/02/09 17:20:15 by Vsavilov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 
 typedef struct s_pex
 {
-	char	**arg;
-	char	**path;
+	char	**cmmd;
+	char	*cmmd_path;
 	int	fd_io[2];
+	int	pipe_fd[2];
+	pid_t	pid;
 }	t_pex;
 
 #endif
