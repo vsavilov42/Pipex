@@ -5,7 +5,7 @@ int	main(int argc, char **argv)
 	t_pex	*pex;
 	int	i;
 
-	i = -1;
+	i = 1;
 	pex = (t_pex *)ft_calloc(1, sizeof(t_pex));
 	if ((argc >= 5 && ft_strncmp("here_doc", argv[1], 9)) || argc >= 6)
 	{
@@ -25,21 +25,32 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
+char	*command_path(t_pex *pex)
+{
+(void)pex;
+return ("command_path");
+}
+
 void	child_process(t_pex *pex, char *command)
 {
 	int	i;
 	extern char **environ;
 
-	i = 0;
+	dprintf(2, "->%s\n", command);
+	i = -1;
 	pex->cmmd = ft_split(command, ' ');
 	if (**pex->cmmd == '/' || **pex->cmmd == '.' || access(*pex->cmmd, X_OK) == 0)
 		pex->cmmd_path = *pex->cmmd;
 	else
 	{
-		while (environ[i] && ft_strncmp("PATH=", environ[i], 5))
-			i++;
+		while (environ[++i])
+			if (ft_strncmp("PATH=", environ[i], 5) == 0)
+				pex->env = environ[i];
+		if (environ[i] == NULL)
+			exit(errormsg("Error: path not found.\n"));
+		pex->cmmd_path = command_path(pex);
 	}
-
+	execve(pex->cmmd_path, pex->cmmd, environ);
 }
 
 void	pipe_red(t_pex *pex, char *command)
@@ -63,9 +74,9 @@ void	pipe_red(t_pex *pex, char *command)
 	else
 	{
 		close(pex->pipe_fd[0]);
-		dup2(pex->pipe_fd[1], STDIN_FILENO);
+		dup2(pex->pipe_fd[1], STDOUT_FILENO);
 		close(pex->pipe_fd[1]);
 		child_process(pex, command);
-		printf("%s\n", command);
+		printf("Command in pipe redirection function-> %s\n", command);
 	}
 }
