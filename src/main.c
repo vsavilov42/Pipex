@@ -1,9 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: Vsavilov <Vsavilov@student.42Madrid.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/12 23:09:22 by Vsavilov          #+#    #+#             */
+/*   Updated: 2022/02/12 23:12:55 by Vsavilov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <pipex.h>
+
+void	leaks()
+{
+	system("lsof -c Pipex");
+	system("leaks -q Pipex");
+}
 
 int	main(int argc, char **argv)
 {
 	t_pex	*pex;
-	int	i;
+	int		i;
 
 	i = 1;
 	pex = (t_pex *)ft_calloc(1, sizeof(t_pex));
@@ -16,7 +34,8 @@ int	main(int argc, char **argv)
 		else
 		{
 			pex->fd_io[0] = open(argv[1], O_RDONLY);
-			pex->fd_io[1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			pex->fd_io[1] = open(argv[argc - 1],
+					O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			dup2(pex->fd_io[0], STDIN_FILENO);
 		}
 		while (++i < argc - 2)
@@ -24,6 +43,7 @@ int	main(int argc, char **argv)
 		dup2(pex->fd_io[1], STDOUT_FILENO);
 		child_process(pex, argv[argc - 2]);
 	}
+	atexit(leaks);
 	return (0);
 }
 
@@ -31,7 +51,7 @@ void	command_path(t_pex *pex)
 {
 	char	**env;
 	char	*tmp;
-	int i = -1;
+	int		i;
 
 	env = ft_split(pex->env, ':');
 	i = -1;
@@ -43,17 +63,17 @@ void	command_path(t_pex *pex)
 	}
 	if (!pex->cmmd_path)
 		exit(errormsg("Error: Command not found.\n"));
-
 }
 
 void	child_process(t_pex *pex, char *command)
 {
-	int	i;
-	extern char **environ;
+	int			i;
+	extern char	**environ;
 
 	i = -1;
 	pex->cmmd = ft_split(command, ' ');
-	if (**pex->cmmd == '/' || **pex->cmmd == '.' || access(*pex->cmmd, X_OK) == 0)
+	if (**pex->cmmd == '/' || **pex->cmmd == '.'
+		|| access(*pex->cmmd, X_OK) == 0)
 		pex->cmmd_path = *pex->cmmd;
 	else
 	{

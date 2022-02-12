@@ -6,7 +6,7 @@
 #    By: Vsavilov <Vsavilov@student.42Madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/22 13:34:33 by Vsavilov          #+#    #+#              #
-#    Updated: 2022/02/08 22:22:44 by Vsavilov         ###   ########.fr        #
+#    Updated: 2022/02/12 22:58:48 by Vsavilov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ CFLAGS += -I ./$(INC_PATH) -I ./$(LIBFT)/inc
 
 CFLAGS += -O3
 
-CFLAGS += -fsanitize=address -g3
+#CFLAGS += -fsanitize=address -g3
 
 #################
 ###   Paths   ###
