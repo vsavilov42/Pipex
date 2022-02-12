@@ -7,7 +7,7 @@ int	main(int argc, char **argv)
 
 	i = 1;
 	pex = (t_pex *)ft_calloc(1, sizeof(t_pex));
-	if ((argc >= 5 && ft_strncmp("here_doc", argv[1], 9)) || argc >= 6)
+	if (argc >= 5)
 	{
 		if (!ft_strncmp("here_doc", argv[1], 9))
 		{
@@ -21,14 +21,29 @@ int	main(int argc, char **argv)
 		}
 		while (++i < argc - 2)
 			pipe_red(pex, argv[i]);
+		dup2(pex->fd_io[1], STDOUT_FILENO);
+		child_process(pex, argv[argc - 2]);
 	}
 	return (0);
 }
 
-char	*command_path(t_pex *pex)
+void	command_path(t_pex *pex)
 {
-(void)pex;
-return ("command_path");
+	char	**env;
+	char	*tmp;
+	int i = -1;
+
+	env = ft_split(pex->env, ':');
+	i = -1;
+	tmp = ft_strjoin("/", *pex->cmmd);
+	while (env[++i])
+	{
+		if (access(ft_strjoin(env[i], tmp), X_OK) == 0)
+			pex->cmmd_path = ft_strjoin(env[i], tmp);
+	}
+	if (!pex->cmmd_path)
+		exit(errormsg("Error: Command not found.\n"));
+
 }
 
 void	child_process(t_pex *pex, char *command)
@@ -36,7 +51,6 @@ void	child_process(t_pex *pex, char *command)
 	int	i;
 	extern char **environ;
 
-	dprintf(2, "->%s\n", command);
 	i = -1;
 	pex->cmmd = ft_split(command, ' ');
 	if (**pex->cmmd == '/' || **pex->cmmd == '.' || access(*pex->cmmd, X_OK) == 0)
@@ -45,18 +59,16 @@ void	child_process(t_pex *pex, char *command)
 	{
 		while (environ[++i])
 			if (ft_strncmp("PATH=", environ[i], 5) == 0)
-				pex->env = environ[i];
-		if (environ[i] == NULL)
+				pex->env = ft_substr(environ[i], 5, ft_strlen(environ[i]));
+		if (!pex->env)
 			exit(errormsg("Error: path not found.\n"));
-		pex->cmmd_path = command_path(pex);
+		command_path(pex);
 	}
 	execve(pex->cmmd_path, pex->cmmd, environ);
 }
 
 void	pipe_red(t_pex *pex, char *command)
 {
-	int	stat_loc;
-
 	if (pipe(pex->pipe_fd) == -1)
 		exit(errormsg("Error: pipe failure.\n"));
 	pex->pid = fork();
@@ -67,9 +79,8 @@ void	pipe_red(t_pex *pex, char *command)
 		close(pex->pipe_fd[1]);
 		dup2(pex->pipe_fd[0], STDIN_FILENO);
 		close(pex->pipe_fd[0]);
-		waitpid(pex->pid, &stat_loc, 0);
-		if (WEXITSTATUS(stat_loc) == 1)
-			exit(errormsg("Error: waitpid failure.\n"));
+		dup2(pex->fd_io[1], STDOUT_FILENO);
+		waitpid(pex->pid, NULL, 0);
 	}
 	else
 	{
@@ -77,6 +88,5 @@ void	pipe_red(t_pex *pex, char *command)
 		dup2(pex->pipe_fd[1], STDOUT_FILENO);
 		close(pex->pipe_fd[1]);
 		child_process(pex, command);
-		printf("Command in pipe redirection function-> %s\n", command);
 	}
 }
