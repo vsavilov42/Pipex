@@ -6,7 +6,7 @@
 #    By: Vsavilov <Vsavilov@student.42Madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/22 13:34:33 by Vsavilov          #+#    #+#              #
-#    Updated: 2022/02/13 15:00:03 by Vsavilov         ###   ########.fr        #
+#    Updated: 2022/02/13 18:07:35 by Vsavilov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 ###   Program/s name/s   ###
 ############################
 
-NAME = Pipex
+NAME = pipex
 
 LIBFT_NAME = libft.a
 
