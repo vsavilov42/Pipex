@@ -6,7 +6,7 @@
 /*   By: Vsavilov <Vsavilov@student.42Madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 23:09:22 by Vsavilov          #+#    #+#             */
-/*   Updated: 2022/02/12 23:12:55 by Vsavilov         ###   ########.fr       */
+/*   Updated: 2022/02/13 13:59:32 by Vsavilov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	main(int argc, char **argv)
 	int		i;
 
 	i = 1;
+//	atexit(leaks);
 	pex = (t_pex *)ft_calloc(1, sizeof(t_pex));
 	if (argc >= 5)
 	{
@@ -34,6 +35,8 @@ int	main(int argc, char **argv)
 		else
 		{
 			pex->fd_io[0] = open(argv[1], O_RDONLY);
+			if (pex->fd_io[0] == -1)
+				exit(errormsg("Error: Permissions denied.\n"));
 			pex->fd_io[1] = open(argv[argc - 1],
 					O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			dup2(pex->fd_io[0], STDIN_FILENO);
@@ -43,7 +46,6 @@ int	main(int argc, char **argv)
 		dup2(pex->fd_io[1], STDOUT_FILENO);
 		child_process(pex, argv[argc - 2]);
 	}
-	atexit(leaks);
 	return (0);
 }
 
