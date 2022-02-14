@@ -6,7 +6,7 @@
 /*   By: Vsavilov <Vsavilov@student.42Madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 23:09:22 by Vsavilov          #+#    #+#             */
-/*   Updated: 2022/02/13 18:09:43 by Vsavilov         ###   ########.fr       */
+/*   Updated: 2022/02/13 21:32:06 by Vsavilov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	heredoc_handler(t_pex *pex, int argc, char **argv)
 	}
 	else
 		heredoc_child(pex, argv[2]);
-	pex->fd_io[1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	pex->fd_io[1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
 	pex->index = 2;
 }
 
